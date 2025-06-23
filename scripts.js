@@ -1,3 +1,5 @@
+let cl;
+
 document.addEventListener('DOMContentLoaded', function () {
 new Cleave('.cardNumber', {
     creditCard: true,
@@ -27,25 +29,42 @@ new Cleave(".cardOwnerSurname", {
     
 });
 
-new Cleave(".paymentValue", {
+cl = new Cleave(".paymentValue", {
     numeral:true,
     prefix: "₽ ",
-    numeralThousandsGroupStyle: 'thousand' 
+    numeralThousandsGroupStyle: 'thousand',
+    rawValueTrimPrefix: true
+ 
 });
 
 new Cleave(".phonenumber", {
     phone: true,
-    phoneRegionCode: 'ru'
+    phoneRegionCode: 'RU'
 });
 
 new Cleave(".secretkey", {
     prefix: "ВОР",
     delimiters: ["-","-","-","-"],
     blocks: [3,3,4,2,1],
-    numericOnly: true
+    numericOnly: true,
+    noImmediatePrefix: true
 
 });
 
-
+const payButton = document.getElementById("payButton");
+  payButton.addEventListener("click", function () {
+    const data = {
+      cardNumber: document.querySelector(".cardNumber").value,
+      cardDate: document.querySelector(".cardDate").value,
+      cardCVV: document.querySelector(".cardCVV").value,
+      ownerName: document.querySelector(".cardOwnerName").value,
+      ownerSurname: document.querySelector(".cardOwnerSurname").value,
+      paymentValue: document.querySelector(".paymentValue").value,
+      phoneNumber: document.querySelector(".phonenumber").value,
+      secretKey: document.querySelector(".secretkey").value,
+    };
+    console.log(cl.getRawValue());
+    console.log("Данные для оплаты:", data);
+  });
 
 });
